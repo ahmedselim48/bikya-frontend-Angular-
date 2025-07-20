@@ -53,27 +53,31 @@ toggleDarkMode() {
   this.isLoading = true;
 
   this.chatService.ask(input).subscribe({
-    next: (response) => {
-      const content = response.response;
+  next: (response) => {
+    const content = response.response;
 
-      this.messages.push({
-        role: 'assistant', // صححتها من 'user'
-        content: `<pre><code class="language-typescript">${content}</code></pre>`
-      });
+    const isCode = content.includes("```") || content.includes("class ") || content.includes("function ") || content.includes("public ") || content.includes("const ") || content.includes("{") || content.includes(";");
 
-      this.isLoading = false;
-      setTimeout(() => this.scrollToBottom(), 100);
-    },
-    error: (error) => {
-      this.messages.push({
-        role: 'assistant',
-        content: '❌ حصل خطأ أثناء الاتصال بالخدمة.'
-      });
+    this.messages.push({
+      role: 'assistant',
+      content: isCode
+        ? `<pre><code class="language-typescript">${content}</code></pre>`
+        : content
+    });
 
-      console.error(error);
-      this.isLoading = false;
-    }
-  });
+    this.isLoading = false;
+    setTimeout(() => this.scrollToBottom(), 100);
+  },
+  error: (error) => {
+    this.messages.push({
+      role: 'assistant',
+      content: '❌ حصل خطأ أثناء الاتصال بالخدمة.'
+    });
+    console.error(error);
+    this.isLoading = false;
+  }
+});
+
 }
 
 }
