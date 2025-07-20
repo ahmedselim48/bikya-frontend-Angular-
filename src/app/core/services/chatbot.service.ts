@@ -31,7 +31,8 @@ private apiKey = 'https://localhost:65162/api/Chat';
       ]
     };
 
-    return this.http.post<any>(this.apiKey, body, { headers });
+   return this.http.post<IMessage>(this.apiKey, { message });
+
   }
 
 

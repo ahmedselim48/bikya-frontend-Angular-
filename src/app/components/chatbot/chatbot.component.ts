@@ -37,31 +37,37 @@ export class ChatbotComponent implements AfterViewChecked {
     if (el) el.scrollTop = el.scrollHeight;
   }
 
-  async sendMessage() {
-    if (!this.userInput.trim()) return;
+  sendMessage() {
+  if (!this.userInput.trim()) return;
 
-    this.messages.push({ role: 'user', content: this.userInput });
-    const input = this.userInput;
-    this.userInput = '';
-    this.isLoading = true;
+  this.messages.push({ role: 'user', content: this.userInput });
 
-    try {
-      const response = await this.chatService.ask(input).toPromise();
-      const content = response.choices[0].message.content;
+  const input = this.userInput;
+  this.userInput = '';
+  this.isLoading = true;
+
+  this.chatService.ask(input).subscribe({
+    next: (response) => {
+      const content = response.response;
 
       this.messages.push({
-        role: 'user',
+        role: 'assistant', // صححتها من 'user'
         content: `<pre><code class="language-typescript">${content}</code></pre>`
       });
-    } catch (error) {
+
+      this.isLoading = false;
+      setTimeout(() => this.scrollToBottom(), 100);
+    },
+    error: (error) => {
       this.messages.push({
         role: 'assistant',
         content: '❌ حصل خطأ أثناء الاتصال بالخدمة.'
       });
-      console.error(error);
-    }
 
-    this.isLoading = false;
-    setTimeout(() => this.scrollToBottom(), 100);
-  }
+      console.error(error);
+      this.isLoading = false;
+    }
+  });
+}
+
 }
