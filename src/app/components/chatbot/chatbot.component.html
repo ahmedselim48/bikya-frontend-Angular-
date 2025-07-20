@@ -1,0 +1,19 @@
+<div class="chat-container" [class.dark]="darkMode">
+  <h4 class="text-center fw-bold mb-3">💬 Chat with AI</h4>
+
+  <button class="btn btn-sm btn-secondary mb-3" (click)="toggleDarkMode()">
+    {{ darkMode ? '☀️ Light Mode' : '🌙 Dark Mode' }}
+  </button>
+
+  <div #chatBox class="chat-box">
+    <div *ngFor="let msg of messages" class="message" [ngClass]="msg.role">
+      <strong>{{ msg.role === 'user' ? 'You' : 'Bot' }}:</strong>
+      <div class="message" [innerHTML]="msg.content | safeHtml"></div>
+    </div>
+  </div>
+
+  <div class="input-group mt-3">
+    <input [(ngModel)]="userInput" (keydown.enter)="sendMessage()" class="form-control" placeholder="Type your message..." />
+    <button class="btn btn-primary" (click)="sendMessage()">Send</button>
+  </div>
+</div>
