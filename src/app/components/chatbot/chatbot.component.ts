@@ -19,7 +19,7 @@ export class ChatbotComponent implements AfterViewChecked {
 
  messages: IMessage[] = [];
   userInput: string = '';
-  darkMode: boolean = false;
+  isDarkMode: boolean = false;
   isLoading: boolean = false;
 
   constructor(private chatService: ChatbotService) {}
@@ -28,10 +28,16 @@ export class ChatbotComponent implements AfterViewChecked {
     hljs.highlightAll();
   }
 
-  toggleDarkMode() {
-    this.darkMode = !this.darkMode;
-  }
+ 
+toggleDarkMode() {
+  this.isDarkMode = !this.isDarkMode;
 
+  if (this.isDarkMode) {
+    document.body.classList.add('dark-mode');
+  } else {
+    document.body.classList.remove('dark-mode');
+  }
+}
   scrollToBottom() {
     const el = document.getElementById('messages');
     if (el) el.scrollTop = el.scrollHeight;

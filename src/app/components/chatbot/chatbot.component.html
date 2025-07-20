@@ -1,8 +1,8 @@
-<div class="chat-container" [class.dark]="darkMode">
+<div class="chat-container " [class.dark]="isDarkMode">
   <h4 class="text-center fw-bold mb-3">💬 Chat with AI</h4>
 
-  <button class="btn btn-sm btn-secondary mb-3" (click)="toggleDarkMode()">
-    {{ darkMode ? '☀️ Light Mode' : '🌙 Dark Mode' }}
+  <button class="btn btn-sm btn-secondary mb-3 " (click)="toggleDarkMode()">
+    {{ isDarkMode? '☀️ Light Mode' : '🌙 Dark Mode' }}
   </button>
 
   <div #chatBox class="chat-box">
